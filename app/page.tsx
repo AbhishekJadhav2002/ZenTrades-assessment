@@ -9,6 +9,7 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import { useRef, useState } from "react";
+import { toast } from "react-toastify";
 
 const mapContainerStyle = {
   width: "100%",
@@ -42,7 +43,7 @@ export default function Task_2(): JSX.Element {
 
   const handleAddMarker = () => {
     if (!searchResult) {
-      console.error("Search result is not available");
+      toast.error("Search result is not available");
       return;
     }
     const place = searchResult.getPlace();
@@ -57,14 +58,14 @@ export default function Task_2(): JSX.Element {
         setMarkers([...markers, marker]);
         searchRef.current!.value = "";
       } else {
-        console.error("Error geocoding address:", address);
+        toast.error("Error geocoding address: " + address);
       }
     });
   };
 
   const handleDirections = () => {
     if (markers.length < 2) {
-      console.error(
+      toast.error(
         "Please add at least two markers before calculating directions."
       );
       return;
@@ -103,25 +104,33 @@ export default function Task_2(): JSX.Element {
             });
             const data = await res.json();
             if (!res.ok) {
-              console.error("Error planning route:", data);
+              toast.error("Error planning route:", data);
             }
-            console.log("Route planned:", data);
+            toast.success("Route planned successfully");
           } else {
-            console.error("Error calculating directions:", status);
+            toast.error("Error calculating directions: " + status);
           }
         }
       );
     } catch (error: any) {
-      console.error("Error calculating directions:", error);
+      toast.error("Error calculating directions:", error);
     }
   };
 
   if (loadError) {
-    return <main className="flex min-h-screen max-w-screen overflow-hidden flex-col items-center justify-between p-16 lg:p-24 text-white">Error loading Google Maps</main>;
+    return (
+      <main className="flex min-h-screen max-w-screen overflow-hidden flex-col items-center justify-between p-16 lg:p-24 text-white">
+        Error loading Google Maps
+      </main>
+    );
   }
 
   if (!isLoaded) {
-    return <main className="flex min-h-screen max-w-screen overflow-hidden flex-col items-center justify-between p-16 lg:p-24 text-white">Loading Google Maps...</main>;
+    return (
+      <main className="flex min-h-screen max-w-screen overflow-hidden flex-col items-center justify-between p-16 lg:p-24 text-white">
+        Loading Google Maps...
+      </main>
+    );
   }
 
   return (

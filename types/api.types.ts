@@ -11,3 +11,11 @@ export type Products = {
         [key: string]: Product;
     }
 };
+
+export type UserJobs = {
+    address: string;
+    position: {
+        lat: number;
+        lng: number;
+    }
+};
