@@ -13,9 +13,9 @@ export async function POST(req: NextRequest) {
 
         const base64Sql = Buffer.from(sql).toString('base64');
         const dbHubBody = new FormData();
-        dbHubBody.append('apikey', process.env.NEXT_PUBLIC_DBHUB_API_KEY as string);
-        dbHubBody.append('dbowner', process.env.NEXT_PUBLIC_DBHUB_OWNER as string);
-        dbHubBody.append('dbname', process.env.NEXT_PUBLIC_DBHUB_DBNAME as string);
+        dbHubBody.append('apikey', process.env.DBHUB_API_KEY as string);
+        dbHubBody.append('dbowner', process.env.DBHUB_OWNER as string);
+        dbHubBody.append('dbname', process.env.DBHUB_DBNAME as string);
         dbHubBody.append('sql', base64Sql);
         const jobInsertRes = await fetch(`https://api.dbhub.io/v1/execute`, {
             method: 'POST',
